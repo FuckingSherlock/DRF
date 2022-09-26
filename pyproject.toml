@@ -8,9 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 Django = "3.2.8"
-djangorestframework = "^3.14.0"
 Markdown = "^3.4.1"
 django-filter = "^22.1"
+django-cors-headers = "^3.13.0"
+djangorestframework = "3.13.1"
 
 
 [tool.poetry.group.dev.dependencies]
