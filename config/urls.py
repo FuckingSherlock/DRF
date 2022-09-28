@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework.routers import DefaultRouter
-from users.views import CustomUserModelViewSet
+from users.views import CustomUserModelViewSet, ProjectModelViewSet, TODOModelViewSet
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -9,6 +9,8 @@ from drf_yasg import openapi
 
 router = DefaultRouter()
 router.register('users', CustomUserModelViewSet)
+router.register('projects', ProjectModelViewSet)
+router.register('todo', TODOModelViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
