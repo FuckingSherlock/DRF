@@ -14,14 +14,15 @@ class TODOHyperlinkedModelSerializer(HyperlinkedModelSerializer):
         fields = ['text', 'project', 'created', 'author', 'is_active']
 
 
-class ShortUserModelSerializer(ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email']
+# class ShortUserModelSerializer(ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['id', 'username', 'email']
 
 
 class ProjectModelSerializer(ModelSerializer):
-    users = ShortUserModelSerializer(many=True)
+    users = CustomUser
+    # users = ShortUserModelSerializer(many=True)
 
     class Meta:
         model = Project
