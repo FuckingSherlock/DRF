@@ -5,8 +5,8 @@ const TodoItem = ({ todo }) => {
     return (
         <tr>
             <td>
-                <Link to={`/todos/${todo.project}`}>
-                    {todo.project}
+                <Link to={`/projects/${todo.project.id}`}>
+                    {todo.project.name}
                 </Link>
             </td>
             <td>{todo.author}</td>

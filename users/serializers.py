@@ -13,18 +13,17 @@ class CustomUserModelSerializer(ModelSerializer):
         return super(self, CustomUserModelSerializer).create(validated_data)
 
 
-class TODOHyperlinkedModelSerializer(HyperlinkedModelSerializer):
-    project = Project
-    # project_name = project.name
-
-    class Meta:
-        model = TODO
-        fields = ['id', 'text', 'project', 'created', 'author', 'is_active']
-
-
 class ProjectModelSerializer(ModelSerializer):
     users = CustomUser
 
     class Meta:
         model = Project
         fields = ['id', 'name', 'users', 'url', 'todo']
+
+
+class TODOHyperlinkedModelSerializer(HyperlinkedModelSerializer):
+    project = ProjectModelSerializer()
+
+    class Meta:
+        model = TODO
+        fields = ['id', 'text', 'project', 'created', 'author', 'is_active']
