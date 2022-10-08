@@ -1,12 +1,14 @@
 from .serializers import CustomUserModelSerializer, ProjectModelSerializer, TODOHyperlinkedModelSerializer
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.mixins import ListModelMixin,  UpdateModelMixin
+from rest_framework.mixins import ListModelMixin,  UpdateModelMixin, RetrieveModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from .filters import ProjectFilter
 from .models import CustomUser, Project, TODO
+from rest_framework.settings import api_settings
 
 
-class CustomUserViewSet(ListModelMixin,
+class CustomUserViewSet(RetrieveModelMixin,
+                        ListModelMixin,
                         UpdateModelMixin,
                         GenericViewSet):
     queryset = CustomUser.objects.all()
@@ -16,14 +18,34 @@ class CustomUserViewSet(ListModelMixin,
 # class CustomUserModelViewSet(ModelViewSet):
 #     queryset = CustomUser.objects.all()
 #     serializer_class = CustomUserModelSerializer
+class CustomLimitOffsetPagination(LimitOffsetPagination):
 
-class TODOModelViewSet(ModelViewSet, LimitOffsetPagination):
+    def __init__(self, default_limit=api_settings.PAGE_SIZE, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.default_limit = default_limit
+
+
+class ViewPaginatorMixin:
+    @property
+    def paginator(self):
+        if not hasattr(self, '_paginator'):
+            if self.pagination_class is None:
+                self._paginator = None
+            else:
+                if getattr(self, 'paginate_limit', None):
+                    self._paginator = self.pagination_class(
+                        default_limit=getattr(self, 'paginate_limit', None))
+                else:
+                    self._paginator = self.pagination_class()
+        return self._paginator
+
+
+class TODOModelViewSet(ViewPaginatorMixin, ModelViewSet):
     queryset = TODO.objects.filter(is_active=True)
     serializer_class = TODOHyperlinkedModelSerializer
     filterset_fields = ['project']
-    limit = LimitOffsetPagination
-    limit.default_limit = 20
-    pagination_class = limit
+    paginate_limit = 2
+    pagination_class = CustomLimitOffsetPagination
 
     def destroy(self, request, *args, **kwargs):
         todo = self.get_object()
@@ -31,10 +53,9 @@ class TODOModelViewSet(ModelViewSet, LimitOffsetPagination):
         todo.save()
 
 
-class ProjectDjangoFilterViewSet(ModelViewSet, LimitOffsetPagination):
+class ProjectDjangoFilterViewSet(ViewPaginatorMixin, ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
     filterset_class = ProjectFilter
-    limit = LimitOffsetPagination
-    limit.default_limit = 10
-    pagination_class = limit
+    paginate_limit = 2
+    pagination_class = CustomLimitOffsetPagination

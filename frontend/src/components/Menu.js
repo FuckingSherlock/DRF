@@ -5,7 +5,7 @@ const MenuItem = ({ item }) => {
         <tr>
             <td>{item.user}</td>
             <td>{item.project}</td>
-            <td>{item.to_do}</td>
+            <td>{item.todo}</td>
         </tr>
     )
 }
@@ -16,7 +16,7 @@ const MenuList = ({ tabs }) => {
         <table>
             <th>User</th>
             <th>Project</th>
-            <th>What is to_do??</th>
+            <th>TODO</th>
             {tabs.map((item_) => <MenuItem item={item_} />)}
         </table>
     )
