@@ -1,16 +1,24 @@
+from urllib import request
 from .serializers import CustomUserModelSerializer, ProjectModelSerializer, TODOHyperlinkedModelSerializer
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.mixins import ListModelMixin,  UpdateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import AllowAny, BasePermission
 from .filters import ProjectFilter
 from .models import CustomUser, Project, TODO
 from rest_framework.settings import api_settings
+
+
+class AdminOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_superuser
 
 
 class CustomUserViewSet(RetrieveModelMixin,
                         ListModelMixin,
                         UpdateModelMixin,
                         GenericViewSet):
+    # permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserModelSerializer
 
