@@ -29,7 +29,10 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = ['http://192.168.0.104:3000',
                         'http://127.0.0.1:3000',
-                        'http://localhost:3000']
+                        'http://localhost:3000',
+                        'http://192.168.0.104:8000',
+                        'http://127.0.0.1:8000',
+                        'http://localhost:8000']
 
 # Application definition
 
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -150,6 +154,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.permissions.IsAuthenticated'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
