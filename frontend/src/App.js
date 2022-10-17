@@ -27,14 +27,16 @@ class App extends React.Component {
 
     get_token(username, password) {
         const data = { username: username, password: password }
-        axios.post('http://127.0.0.1:8000/api-token-auth/', data).then(response => {
-            this.set_token(response.data['token'], username)
+        axios.post('http://127.0.0.1:8000/api/token/', data).then(response => {
+            this.set_token(response.data['access'], username)
         }).catch(error => alert('Invalid login or password'))
     }
+
     set_token(token, username) {
         const cookies = new Cookies()
         cookies.set('token', token)
         cookies.set('username', username)
+        console.log(cookies);
         this.setState({ 'token': token }, () => this.load_data())
         this.setState({ 'username': username })
 
@@ -61,11 +63,10 @@ class App extends React.Component {
     get_headers() {
         let headers = {
             'Content-Type': 'application/json'
-            // "Access-Control-Allow-Origin": "*"
         };
 
         if (this.is_auth()) {
-            headers['Authorization'] = 'Token ' + this.state.token
+            headers['Authorization'] = 'Bearer ' + this.state.token
         }
         return headers
     }
