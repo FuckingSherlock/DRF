@@ -14,18 +14,16 @@ class AdminOnly(BasePermission):
         return request.user.is_superuser
 
 
-class CustomUserViewSet(RetrieveModelMixin,
-                        ListModelMixin,
-                        UpdateModelMixin,
-                        GenericViewSet):
+# class CustomUserViewSet(RetrieveModelMixin,
+#                         ListModelMixin,
+#                         UpdateModelMixin,
+#                         GenericViewSet):
     # permission_classes = [AllowAny]
+class CustomUserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserModelSerializer
 
 
-# class CustomUserModelViewSet(ModelViewSet):
-#     queryset = CustomUser.objects.all()
-#     serializer_class = CustomUserModelSerializer
 class CustomLimitOffsetPagination(LimitOffsetPagination):
 
     def __init__(self, default_limit=api_settings.PAGE_SIZE, *args, **kwargs):
