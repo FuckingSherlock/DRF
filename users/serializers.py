@@ -13,12 +13,28 @@ class CustomUserModelSerializer(ModelSerializer):
         return super(self, CustomUserModelSerializer).create(validated_data)
 
 
+class CustomUserAdditionalModelSerializer(CustomUserModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name',
+                  'email', 'projects', 'is_superuser', 'is_staff']
+
+
 class ProjectModelSerializer(ModelSerializer):
     users = CustomUser
 
     class Meta:
         model = Project
         fields = ['id', 'name', 'users', 'url', 'todo']
+
+
+class ProjectAdditionalModelSerializer(ModelSerializer):
+    users = CustomUser
+    # users = CustomUserModelSerializer()  # !!! C этой штукой не работает
+
+    class Meta:
+        model = Project
+        fields = ['name']
 
 
 class TODOHyperlinkedModelSerializer(HyperlinkedModelSerializer):

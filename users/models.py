@@ -19,6 +19,10 @@ class CustomUser(AbstractUser):
         _("staff status"),
         default=False)
 
+    is_superuser = models.BooleanField(
+        _("staff status"),
+        default=False)
+
     def __str__(self):
         return self.username + '\n' + self.email
 

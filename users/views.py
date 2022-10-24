@@ -1,5 +1,6 @@
 from urllib import request
-from .serializers import CustomUserModelSerializer, ProjectModelSerializer, TODOHyperlinkedModelSerializer
+from .serializers import CustomUserModelSerializer, ProjectModelSerializer, TODOHyperlinkedModelSerializer,\
+    CustomUserAdditionalModelSerializer, ProjectAdditionalModelSerializer
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -22,6 +23,11 @@ class AdminOnly(BasePermission):
 class CustomUserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserModelSerializer
+
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return CustomUserAdditionalModelSerializer
+        return CustomUserModelSerializer
 
 
 class CustomLimitOffsetPagination(LimitOffsetPagination):
@@ -65,3 +71,8 @@ class ProjectDjangoFilterViewSet(ViewPaginatorMixin, ModelViewSet):
     filterset_class = ProjectFilter
     paginate_limit = 2
     pagination_class = CustomLimitOffsetPagination
+
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return ProjectAdditionalModelSerializer
+        return ProjectModelSerializer
