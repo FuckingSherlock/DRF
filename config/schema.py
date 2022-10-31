@@ -28,6 +28,20 @@ class Query(ObjectType):
     all_projects = graphene.List(ProjectType)
     all_todos = graphene.List(TODOType)
 
+    user_by_id = graphene.List(CustomUserType, id=graphene.Int(required=False))
+
+    def resolve_user_by_id(root, info, id=None):
+        if id:
+            return CustomUser.objects.get(id=id)
+        return CustomUser.objects.all()
+
+    project_by_user = graphene.List(ProjectType, username=graphene.String(required=False))
+
+    def resolve_project_by_user(root, info, username=None):
+        if username:
+            return Project.objects.filter(users__username=username)
+        return Project.objects.all()
+
     def resolve_all_users(root, info):
         return CustomUser.objects.all()
 
