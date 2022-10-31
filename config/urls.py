@@ -7,7 +7,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
+from graphene_django.views import GraphQLView
 
 router = DefaultRouter()
 router.register('users', CustomUserViewSet)
@@ -40,6 +40,7 @@ urlpatterns = [
         cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
     # path('', include('userapp.urls')),
     # path('api/users/v1', include('userapp.urls', namespace='v1')),
     # path('api/users/v2', include('userapp.urls', namespace='v2')),

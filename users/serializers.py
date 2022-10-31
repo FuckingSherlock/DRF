@@ -30,7 +30,7 @@ class ProjectModelSerializer(ModelSerializer):
 
 class ProjectAdditionalModelSerializer(ModelSerializer):
     users = CustomUser
-    # users = CustomUserModelSerializer()  # !!! C этой штукой не работает
+    # users = CustomUserModelSerializer(many=True)  # !!! C этой штукой не работает
 
     class Meta:
         model = Project
