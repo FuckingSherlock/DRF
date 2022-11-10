@@ -130,15 +130,9 @@ class App extends React.Component {
                             <Route path=':projectId' element={<TodoProject todos={this.state.todos} />} />
                         </Route>
                         <Route path='/todos' element={<TodoList todos={this.state.todos} />} />
-                        {/* <Route exect path='/projects' element={<ProjectList projects={this.state.projects} />} /> */}
-
-                        {/* <Route exect path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} /> */}
-
-
                         <Route path='*' element={<NotFound404 />} />
                         <Route path="/projects2" element={<Navigate replace to="/projects" />} />
                     </Routes>
-
                 </BrowserRouter>
 
                 <Footer />
