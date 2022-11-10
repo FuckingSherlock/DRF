@@ -92,12 +92,6 @@ class App extends React.Component {
 
         }).catch(error => console.log(error))
 
-        // const tabs = [{
-        //     'user': 'user',
-        //     'project': 'project',
-        //     'todo': 'todo'
-        // }]
-        // this.setState({ 'tabs': tabs })
     }
 
     componentDidMount() {
