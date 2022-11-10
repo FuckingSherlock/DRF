@@ -22,6 +22,7 @@ class App extends React.Component {
             'projects': [],
             'todos': [],
             'token': [],
+            'username': [],
         }
     }
 
@@ -36,10 +37,11 @@ class App extends React.Component {
         const cookies = new Cookies()
         cookies.set('token', token)
         cookies.set('username', username)
+        localStorage.setItem('username', username)
+        this.setState({ 'username': localStorage.getItem('username') })
         console.log(cookies);
         this.setState({ 'token': token }, () => this.load_data())
         this.setState({ 'username': username })
-
     }
 
     get_token_from_storage() {
@@ -58,6 +60,7 @@ class App extends React.Component {
         this.setState({ 'users': [] }, () => this.load_data())
         this.setState({ 'projects': [] }, () => this.load_data())
         this.setState({ 'todos': [] }, () => this.load_data())
+        localStorage.setItem('username', '')
     }
 
     get_headers() {
@@ -91,12 +94,11 @@ class App extends React.Component {
             })
 
         }).catch(error => console.log(error))
-
     }
 
     componentDidMount() {
-        // this.load_data()
         this.get_token_from_storage()
+        this.setState({ 'username': localStorage.getItem('username') })
     }
 
     render() {
@@ -105,9 +107,6 @@ class App extends React.Component {
                 {this.is_auth() ? <div>{this.state.username}<br /><button onClick={() => this.logout()}>Logout</button></div> : <LoginForm get_token={(username, password) => this.get_token(username, password)} />}
                 <BrowserRouter>
                     <nav>
-                        {/* <li>
-                            <Link to='/login'>Login</Link>
-                        </li> */}
                         <li>
                             <Link to='/'>Users</Link>
                         </li>
@@ -142,7 +141,6 @@ class App extends React.Component {
 
                 </BrowserRouter>
 
-                {/* <MenuList tabs={this.state.tabs} /> */}
                 <Footer />
             </div>
         )
@@ -151,3 +149,4 @@ class App extends React.Component {
 }
 
 export default App;
+
